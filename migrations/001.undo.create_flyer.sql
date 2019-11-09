@@ -1,0 +1,4 @@
+DROP TABLE IF EXISTS flyers_children;
+DROP TABLE IF EXISTS flyers;
+DROP TABLE IF EXISTS children;
+DROP TYPE IF EXISTS category;
