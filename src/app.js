@@ -5,6 +5,7 @@ const cors = require('cors');
 const helmet = require('helmet');
 const {NODE_ENV} = require('./config');
 const childrenRouter = require('../src/Children/Children-Router')
+const flyersRouter = require('../src/Flyers/Flyers-Router')
 
 
 const app = express();
@@ -20,6 +21,7 @@ app.get('/', (req,res) => {
 });
 
 app.use('/api/children', childrenRouter)
+app.use('/api/flyers', flyersRouter)
 
 app.use(function errorHandler(error, req, res, next){
     let response
