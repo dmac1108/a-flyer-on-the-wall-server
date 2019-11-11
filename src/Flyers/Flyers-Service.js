@@ -2,13 +2,12 @@ const Knex = require("knex")
 
 const FlyersService = {
     getAllFlyers (db){
-        return db.select('*').from('flyers').leftJoin('flyers_children', 'flyers.id', 'flyers_children.flyerid')
-.leftJoin('children', 'flyers_children.childid', 'children.id')
+        return db.select('*').from('flyers')
     },
     getFlyerbyId(db, id){
         return db
         .select('*')
-        .from('flyer')
+        .from('flyers')
         .where({id})
         .first()
     },
@@ -24,6 +23,17 @@ const FlyersService = {
             
         })
     },
+    updateFlyer(db, flyerid, updatedFlyer){
+        return db('flyers')
+        .where('id', flyerid)
+        .update(updatedFlyer)
+        
+    },
+    deleteFlyer(db,flyerid){
+        return db('flyers')
+        .where('id', flyerid)
+        .del()
+    }
    
         
     

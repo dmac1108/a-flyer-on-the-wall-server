@@ -4,12 +4,12 @@ const path = require('path')
 const FlyersService = require('./Flyers-Service')
 
 const flyersRouter = express.Router()
-const jsonBodyParser = express.json()
+const jsonBodyParser = express.json({limit: '50MB'})
 
 const serializeFlyers = flyer => ({
     id: flyer.id,
     title: xss(flyer.title),
-    //image: flyer.flyerimage,
+    image: flyer.flyerimage,
     location: xss(flyer.eventlocation),
     eventstartdate: flyer.eventstartdate,
     eventenddate: flyer.eventenddate,
@@ -29,46 +29,74 @@ flyersRouter
         })
         .catch(next)
     })
-    // .post(jsonBodyParser, (req, res, next) => {
-    //     const {childname} = req.body
-    //     const newChild = {childname}
-
-    //     if(newChild.childname == null){
-    //         return res.status(400)
-    //         .json({
-    //             error: {
-    //                 message: 'Missing the childname in the request body'
-    //             }
-    //         })
-    //     }
+    .post(jsonBodyParser, (req, res, next) => {
+        const {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory} = req.body
+        const newFlyer = {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory}
+        console.log(newFlyer)
+        const requiredFields = {title, flyerimage, eventstartdate, eventenddate, eventlocation}
         
-    //     ChildrenService.insertChild(req.app.get('db'), newChild)
-    //     .then(child =>{
-    //         res.status(201)
-    //         .location(path.posix.join(req.originalUrl, `/${child.id}`))
-    //         .json(serializeChildren(child))
-    //     })
-    // })
+       for (const [key, value] of Object.entries(requiredFields))
+        if(value == null){
+            return res.status(400)
+            .json({
+                error: {
+                    message: `Missing the ${key} in the request body`
+                }
+            })
+        }
+        
+        FlyersService.insertFlyer(req.app.get('db'), newFlyer)
+        .then(flyer =>{
+            res.status(201)
+            .location(path.posix.join(req.originalUrl, `/${flyer.id}`))
+            .json(serializeFlyers(flyer))
+        })
+        .catch(next)
+    })
 
-    // childrenRouter
-    // .route('/:id')
-    // .get((req, res, next) =>{
-    //     const {id} = req.params
-    //     ChildrenService.getChildbyId(req.app.get('db'), id)
-    //     .then(child =>{
-    //         if(!child){
-    //             return res.status(404)
-    //             .json({
-    //                 error: {message: 
-    //                 'Child does not exist'}
-    //             })
-    //         }
-    //         res.json(serializeChildren(child))
-    //         next()
-    //     })
-        //.catch(next)
+    flyersRouter
+    .route('/:id')
+    .all((req, res, next) =>{
+        const {id} = req.params
+        FlyersService.getFlyerbyId(req.app.get('db'), id)
+        .then(flyer =>{
+            if(!flyer){
+                return res.status(404)
+                .json({
+                    error: {message: 
+                    'Flyer does not exist'}
+                })
+            }
+            res.flyer = flyer
+            
+            next()
+        })
+        .catch(next)
 
-    //})
+    })
+    .get((req, res, next)=>{
+        res.json(serializeFlyers(res.flyer))
+    })
+    .delete((req, res, next)=>{
+        
+        FlyersService.deleteFlyer(req.app.get('db'),req.params.id)
+        .then(()=>{
+            res.status(204).end()
+        })
+        .catch(next)
+    })
+    .patch(jsonBodyParser, (req, res, next)=>{
+        const {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory} = req.body
+        
+        const fieldsToUpdate = {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory}
+
+        FlyersService.updateFlyer(req.app.get('db'), req.params.id, fieldsToUpdate)
+        .then((result)=>{
+            res.status(204).end()
+        })
+        .catch(next)
+
+    })
 
 
 module.exports = flyersRouter

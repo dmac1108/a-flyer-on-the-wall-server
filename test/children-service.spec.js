@@ -28,9 +28,9 @@ describe(`Children Service object`, function(){
 
     after(() => db.destroy())
 
-    before(() => db('children').truncate())
+    before(() => db.raw('TRUNCATE flyers_children, children RESTART IDENTITY CASCADE'))
 
-    afterEach(() => db('children').truncate())
+    afterEach(() => db.raw('TRUNCATE flyers_children, children RESTART IDENTITY CASCADE'))
 
     context(`Given 'children' has no data`, ()=>{
             it(`GetAllChildren returns an empty array`, ()=>{

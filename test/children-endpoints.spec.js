@@ -16,9 +16,9 @@ before('make knex instance', ()=>{
 after('disconnect from db', ()=> db.destroy())
 
 before('clean the table', ()=>
-db.raw('TRUNCATE children'))
+db.raw('TRUNCATE flyers_children, children RESTART IDENTITY CASCADE'))
 
-afterEach('cleanup', ()=>db.raw('TRUNCATE children'))
+afterEach('cleanup', ()=>db.raw('TRUNCATE flyers_children, children RESTART IDENTITY CASCADE'))
 
 describe('GET /api/children', function(){
     context(`No data in 'children' table'`, ()=>{
