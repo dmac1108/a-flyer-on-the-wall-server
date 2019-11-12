@@ -24,10 +24,7 @@ function makeFlyersArray(){
     // const afterschool = '\\x' + require('../src/afterschoolbase64.bin')
     // const camping = '\\x' + require('../src/campingbase64.bin')
 
-    const cornmaze = pg_read_file('../src/Corn-Maze-Flyer.jpg','hex', function(err, imgData){
-        console.log(imgData)
-        return imgData = '\\x' + imgData;
-    })
+
 
 
 

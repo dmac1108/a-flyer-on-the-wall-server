@@ -6,7 +6,10 @@ const helmet = require('helmet');
 const {NODE_ENV} = require('./config');
 const childrenRouter = require('../src/Children/Children-Router')
 const flyersRouter = require('../src/Flyers/Flyers-Router')
-
+const flyers_childrenRouter = require('../src/Flyers_Children/Flyers_Children-Router')
+const flyers_childrenRouter_Child = require('../src/Flyers_Children/Flyers_Children-ChildRouter')
+const flyers_childrenRouter_Flyer = require('../src/Flyers_Children/Flyers_Children-FlyerRouter')
+const categoriesRouter = require('./Categories/Categories-Router');
 
 const app = express();
 
@@ -22,6 +25,11 @@ app.get('/', (req,res) => {
 
 app.use('/api/children', childrenRouter)
 app.use('/api/flyers', flyersRouter)
+app.use('/api/flyers_children', flyers_childrenRouter)
+app.use('/api/flyers_children/child', flyers_childrenRouter_Child)
+app.use('/api/flyers_children/flyer', flyers_childrenRouter_Flyer)
+app.use('/api/categories', categoriesRouter)
+
 
 app.use(function errorHandler(error, req, res, next){
     let response
