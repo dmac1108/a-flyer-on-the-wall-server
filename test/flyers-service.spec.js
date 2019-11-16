@@ -1,14 +1,22 @@
 const FlyersService = require('../src/Flyers/Flyers-Service')
 const knex = require('knex')
-const {makeChildrenArray, makeFlyersArray} = require('./flyer.fixtures')
+const {makeChildrenArray, makeBuffers, makeFlyersArray} = require('./flyer.fixtures')
+const {makeFlyers} = require('./flyers-store')
 
 describe.only(`FlyersService`, function(){
     
     let db
     const children = makeChildrenArray()
-    const flyers = makeFlyersArray()
-    
+    const flyers = makeFlyers()
+    /*const flyers = Promise.resolve(makeBuffers()).then(function(values){
+        console.log('in the flyerstest', values)
+        makeFlyersArray(values)
+    })*/
 
+
+
+    //const flyers = makeFlyersArray()
+    console.log(flyers)
 
     before(() =>{
         db = knex({
@@ -49,7 +57,7 @@ describe.only(`FlyersService`, function(){
         // })
     })
 
-    context(`there is data in the 'flyers' table`, ()=>{
+    context.skip(`there is data in the 'flyers' table`, ()=>{
         beforeEach(()=>{
             
             return db

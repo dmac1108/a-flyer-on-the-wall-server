@@ -9,13 +9,13 @@ const jsonBodyParser = express.json({limit: '50MB'})
 const serializeFlyers = flyer => ({
     id: flyer.id,
     title: xss(flyer.title),
-    image: flyer.flyerimage,
+    image: flyer.flyerimage.toString('base64'),
     location: xss(flyer.eventlocation),
     eventstartdate: flyer.eventstartdate,
     eventenddate: flyer.eventenddate,
     actiondate: flyer.actiondate,
     action: xss(flyer.flyeraction),
-    category: flyer.category,
+    category: flyer.flyercategory,
     
 })
 
@@ -32,7 +32,6 @@ flyersRouter
     .post(jsonBodyParser, (req, res, next) => {
         const {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory} = req.body
         const newFlyer = {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory}
-        console.log(newFlyer)
         const requiredFields = {title, flyerimage, eventstartdate, eventenddate, eventlocation}
         
        for (const [key, value] of Object.entries(requiredFields))
@@ -89,6 +88,14 @@ flyersRouter
         const {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory} = req.body
         
         const fieldsToUpdate = {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory}
+
+        const numberOfValues = Object.values(fieldsToUpdate).filter(Boolean).length
+        
+        if(numberOfValues === 0){
+            return res.status(400).json({
+                error: {message: `Request body must contain either 'name', 'content', or 'folderId'`}
+            })
+        }
 
         FlyersService.updateFlyer(req.app.get('db'), req.params.id, fieldsToUpdate)
         .then((result)=>{

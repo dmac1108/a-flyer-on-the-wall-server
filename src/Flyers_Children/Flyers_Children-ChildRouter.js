@@ -15,7 +15,7 @@ const serializeFlyer_Children = flyer_child => ({
 
 flyers_childrenRouter_Child
 .route('/:childid')
-.get((req, res, next) =>{
+.all((req, res, next) =>{
     const childid = req.params.childid
     Flyers_ChildrenService.getFlyers_ChildrenByChildId(req.app.get('db'), childid)
     .then(flyers_child=>{
@@ -27,11 +27,15 @@ flyers_childrenRouter_Child
                 'There are no flyers for this child or the child does not exist'}
             })
         }
-
-        flyers_child.length > 1 ?
-        res.json(flyers_child.map(serializeFlyer_Children)):
-        res.json(serializeFlyer_Children(flyers_child))
+        res.flyers_child = flyers_child
+            
+        next()
     })
+})
+.get((req, res, next)=>{
+    res.flyers_child.length > 1 ?
+    res.json(res.flyers_child.map(serializeFlyer_Children)):
+    res.json(serializeFlyer_Children(res.flyers_child))
 })
 .delete((req,res,next)=>{
     const childid = req.params.childid
