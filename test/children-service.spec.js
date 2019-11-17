@@ -44,7 +44,7 @@ describe(`Children Service object`, function(){
                 const newTestChild = {childname: "Joe"}
                 return ChildrenService.insertChild(db,newTestChild)
                 .then(actual =>{
-                    console.log(actual)
+                    
                     expect(actual).to.eql({
                         id: 1,
                         childname: newTestChild.childname,

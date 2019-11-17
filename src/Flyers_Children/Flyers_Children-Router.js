@@ -27,7 +27,7 @@ flyers_childrenRouter
     .catch(next)
 })
 .post(jsonBodyParser, (req, res, next)=>{
-    console.log(req.body)
+    
     const {childid, flyerid} = req.body
     
     const newFlyer_Child = {childid, flyerid}

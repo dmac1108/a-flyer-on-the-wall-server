@@ -13,7 +13,7 @@ const ChildrenService = {
         .first()
     },
     insertChild(db, newChild){
-        console.log(newChild)
+        
         return db
         .insert(newChild)
         .into('children')

@@ -16,7 +16,7 @@ describe.only(`FlyersService`, function(){
 
 
     //const flyers = makeFlyersArray()
-    console.log(flyers)
+    
 
     before(() =>{
         db = knex({
