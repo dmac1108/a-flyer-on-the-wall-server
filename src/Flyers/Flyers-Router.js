@@ -2,6 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const FlyersService = require('./Flyers-Service')
+const atob = require('atob')
 
 const flyersRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})
@@ -9,7 +10,7 @@ const jsonBodyParser = express.json({limit: '50MB'})
 const serializeFlyers = flyer => ({
     id: flyer.id,
     title: xss(flyer.title),
-    image: flyer.flyerimage.toString('base64'),
+    image: atob(flyer.flyerimage.toString('base64')),
     location: xss(flyer.eventlocation),
     eventstartdate: flyer.eventstartdate,
     eventenddate: flyer.eventenddate,

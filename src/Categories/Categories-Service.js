@@ -3,7 +3,7 @@ const knex = require('knex')
 const CategoriesService = {
     getAllCategories(db){
         return db.raw('Select unnest(enum_range(null::category))' ).then(result => {
-            console.log(result.rows)
+            
             return result.rows})
             .catch((err)=>{console.log(err); throw err})
             // .finally(()=>{
