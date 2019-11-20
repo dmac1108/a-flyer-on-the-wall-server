@@ -101,9 +101,22 @@ flyersRouter
         FlyersService.updateFlyer(req.app.get('db'), req.params.id, fieldsToUpdate)
         .then((result)=>{
             res.status(204).end()
+            .json(serializeFlyers(flyer))
         })
         .catch(next)
 
+    })
+
+    flyersRouter
+    .route('/user/:userid')
+    .get((req, res, next) =>{
+        const userId = req.params.userid
+        
+        FlyersService.getAllFlyersByUserId(req.app.get('db'), userId)
+        .then((flyers)=>{
+            res.json(flyers.map(serializeFlyers))
+        })
+        .catch(next)
     })
 
 

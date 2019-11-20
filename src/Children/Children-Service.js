@@ -12,6 +12,12 @@ const ChildrenService = {
         .where({id})
         .first()
     },
+    getAllChildrenByParentId(db, parentid){
+        return db
+        .select('*')
+        .from('children')
+        .where('parentid', parentid)
+    },
     insertChild(db, newChild){
         
         return db

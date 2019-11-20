@@ -11,6 +11,7 @@ const flyers_childrenRouter = require('../src/Flyers_Children/Flyers_Children-Ro
 const flyers_childrenRouter_Child = require('../src/Flyers_Children/Flyers_Children-ChildRouter')
 const flyers_childrenRouter_Flyer = require('../src/Flyers_Children/Flyers_Children-FlyerRouter')
 const categoriesRouter = require('./Categories/Categories-Router');
+const usersRouter = require('./Users/Users-Router')
 
 const app = express();
 
@@ -26,6 +27,7 @@ app.get('/', (req,res) => {
     res.send('Hello, world!')
 });
 
+app.use('/api/users', usersRouter)
 app.use('/api/children', childrenRouter)
 app.use('/api/flyers', flyersRouter)
 app.use('/api/flyers_children', flyers_childrenRouter)

@@ -4,6 +4,12 @@ const FlyersService = {
     getAllFlyers (db){
         return db.select('*').from('flyers')
     },
+    getAllFlyersByUserId(db, userId){
+        return db.select('*')
+        .from('flyers')
+        .where('parentuserid', userId)
+
+    },
     getFlyerbyId(db, id){
         return db
         .select('*')

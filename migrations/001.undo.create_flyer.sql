@@ -1,4 +1,5 @@
 DROP TABLE IF EXISTS flyers_children;
 DROP TABLE IF EXISTS flyers;
 DROP TABLE IF EXISTS children;
+DROP TABLE IF EXISTS users;
 DROP TYPE IF EXISTS category;

@@ -9,6 +9,7 @@ const jsonBodyParser = express.json()
 const serializeChildren = child => ({
     id: child.id,
     childname: xss(child.childname),
+    parentid: child.parentid,
 })
 
 
@@ -56,6 +57,20 @@ childrenRouter
                 })
             }
             res.json(serializeChildren(child))
+            next()
+        })
+        .catch(next)
+
+    })
+    childrenRouter
+    .route('/parent/:parentid')
+    .get((req, res, next) =>{
+        const parentid = req.params.parentid
+        
+        ChildrenService.getAllChildrenByParentId(req.app.get('db'), parentid)
+        .then(children =>{
+            console.log(children)
+            res.json(children.map(serializeChildren))
             next()
         })
         .catch(next)
