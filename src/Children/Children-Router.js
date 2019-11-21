@@ -2,6 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const ChildrenService = require('./Children-Service')
+const {requireAuth} = require('../middleware/basic-auth')
 
 const childrenRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -15,6 +16,7 @@ const serializeChildren = child => ({
 
 childrenRouter
     .route('/')
+    .all(requireAuth)
     .get((req,res, next) => {
         ChildrenService.getAllChildren(req.app.get('db'))
         .then(children =>{
@@ -34,7 +36,8 @@ childrenRouter
                 }
             })
         }
-        
+        newChild.parentid = req.user.userid
+        console.log("post", newChild)
         ChildrenService.insertChild(req.app.get('db'), newChild)
         .then(child =>{
             res.status(201)
@@ -45,6 +48,7 @@ childrenRouter
 
     childrenRouter
     .route('/:id')
+    .all(requireAuth)
     .get((req, res, next) =>{
         const {id} = req.params
         ChildrenService.getChildbyId(req.app.get('db'), id)
@@ -64,6 +68,7 @@ childrenRouter
     })
     childrenRouter
     .route('/parent/:parentid')
+    .all(requireAuth)
     .get((req, res, next) =>{
         const parentid = req.params.parentid
         

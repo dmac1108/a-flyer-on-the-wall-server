@@ -2,6 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const Flyers_ChildrenService = require('./Flyers_Children-Service')
+const {requireAuth} = require('../middleware/basic-auth')
 
 const flyers_childrenRouter_Flyer = express.Router()
 const jsonBodyParser = express.json()
@@ -15,6 +16,7 @@ const serializeFlyer_Children = flyer_child => ({
 
 flyers_childrenRouter_Flyer
 .route('/:flyerid')
+.all(requireAuth)
 .all((req, res, next) =>{
     const flyerid = req.params.flyerid
     Flyers_ChildrenService.getFlyers_ChildrenByFlyerId(req.app.get('db'), flyerid)

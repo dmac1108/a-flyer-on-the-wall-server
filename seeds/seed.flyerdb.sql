@@ -1,7 +1,7 @@
 INSERT INTO users (firstname, lastname, email, username, user_password)
 VALUES
-('Jane', 'Smith', 'jane.smith@test.com', 'jsmith', 'apassword'),
-('Anita', 'Jones', 'anita.jones@test.com', 'ajones', 'apassword');
+('Jane', 'Smith', 'jane.smith@test.com', 'jsmith', '$2a$12$H/xB3BNGPBemIPx2LJw4HuIEwvV98zsrGGkysyv8tos0k48j2w4L6'),
+('Anita', 'Jones', 'anita.jones@test.com', 'ajones', '$2a$12$sdtKiihA1lgHrCbIB3hxqul1i4HfBBUZedKjWDMJfD3anJrXPc8RK');
 
 INSERT INTO children (childname, parentid) 
 VALUES

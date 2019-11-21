@@ -4,6 +4,7 @@ const path = require('path')
 const Flyers_ChildrenService = require('./Flyers_Children-Service')
 const ChildrenService = require('../Children/Children-Service');
 const FlyersService = require('../Flyers/Flyers-Service')
+const {requireAuth} = require('../middleware/basic-auth')
 
 const flyers_childrenRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})
@@ -17,6 +18,7 @@ const serializeFlyer_Children = flyer_child => ({
 
 flyers_childrenRouter
 .route('/')
+.all(requireAuth)
 .get((req, res, next)=>{
     Flyers_ChildrenService.getAllFlyers_Children(req.app.get('db'))
     .then(flyer_children =>{

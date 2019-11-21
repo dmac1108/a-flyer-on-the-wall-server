@@ -1,6 +1,23 @@
 
 
-
+function makeUsersArray(){
+    return [
+        {
+            firstname: 'Jane', 
+            lastname: 'Smith',
+            email: 'jane.smith@test.com',
+            username: 'jsmith',
+            user_password: '$2a$12$H/xB3BNGPBemIPx2LJw4HuIEwvV98zsrGGkysyv8tos0k48j2w4L6'
+        },
+        {
+        firstname: 'Anita', 
+        lastname: 'Jones',
+        email: 'anita.jones@test.com',
+        username: 'ajones',
+        user_password: '$2a$12$sdtKiihA1lgHrCbIB3hxqul1i4HfBBUZedKjWDMJfD3anJrXPc8RK' 
+        }
+    ]
+}
 
 
 function makeChildrenArray(){
@@ -108,4 +125,4 @@ function makeFlyersArray(values){
 }
 
 
-module.exports = {makeChildrenArray, makeBuffers, makeFlyersArray}
+module.exports = {makeUsersArray,makeChildrenArray, makeBuffers, makeFlyersArray}

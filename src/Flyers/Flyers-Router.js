@@ -3,6 +3,7 @@ const express = require('express')
 const path = require('path')
 const FlyersService = require('./Flyers-Service')
 const atob = require('atob')
+const {requireAuth} = require('../middleware/basic-auth')
 
 const flyersRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})
@@ -23,6 +24,7 @@ const serializeFlyers = flyer => ({
 
 flyersRouter
     .route('/')
+    .all(requireAuth)
     .get((req,res, next) => {
         FlyersService.getAllFlyers(req.app.get('db'))
         .then(flyer =>{
@@ -44,7 +46,8 @@ flyersRouter
                 }
             })
         }
-        
+        newFlyer.parentuserid = req.user.userid
+
         FlyersService.insertFlyer(req.app.get('db'), newFlyer)
         .then(flyer =>{
             res.status(201)
@@ -56,6 +59,7 @@ flyersRouter
 
     flyersRouter
     .route('/:id')
+    .all(requireAuth)
     .all((req, res, next) =>{
         const {id} = req.params
         FlyersService.getFlyerbyId(req.app.get('db'), id)
@@ -97,6 +101,7 @@ flyersRouter
                 error: {message: `Request body must contain either 'name', 'content', or 'folderId'`}
             })
         }
+        fieldsToUpdate.parentuserid = req.user.userid
 
         FlyersService.updateFlyer(req.app.get('db'), req.params.id, fieldsToUpdate)
         .then((result)=>{
@@ -109,6 +114,7 @@ flyersRouter
 
     flyersRouter
     .route('/user/:userid')
+    .all(requireAuth)
     .get((req, res, next) =>{
         const userId = req.params.userid
         
