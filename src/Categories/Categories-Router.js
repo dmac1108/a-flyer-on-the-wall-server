@@ -2,7 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const CategoriesService = require('./Categories-Service')
-const {requireAuth} = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/jwt-auth')
 
 const categoriesRouter = express.Router();
 const jsonBodyParser = express.json();

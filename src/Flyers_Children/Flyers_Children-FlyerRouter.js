@@ -2,7 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const Flyers_ChildrenService = require('./Flyers_Children-Service')
-const {requireAuth} = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/jwt-auth')
 
 const flyers_childrenRouter_Flyer = express.Router()
 const jsonBodyParser = express.json()

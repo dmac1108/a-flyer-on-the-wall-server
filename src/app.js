@@ -12,6 +12,7 @@ const flyers_childrenRouter_Child = require('../src/Flyers_Children/Flyers_Child
 const flyers_childrenRouter_Flyer = require('../src/Flyers_Children/Flyers_Children-FlyerRouter')
 const categoriesRouter = require('./Categories/Categories-Router');
 const usersRouter = require('./Users/Users-Router')
+const authRouter = require('./auth/auth-router')
 
 const app = express();
 
@@ -34,7 +35,7 @@ app.use('/api/flyers_children', flyers_childrenRouter)
 app.use('/api/flyers_children/child', flyers_childrenRouter_Child)
 app.use('/api/flyers_children/flyer', flyers_childrenRouter_Flyer)
 app.use('/api/categories', categoriesRouter)
-
+app.use('/api/auth', authRouter)
 
 app.use(function errorHandler(error, req, res, next){
     let response

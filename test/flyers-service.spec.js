@@ -1,21 +1,13 @@
 const FlyersService = require('../src/Flyers/Flyers-Service')
 const knex = require('knex')
 const {makeChildrenArray, makeBuffers, makeFlyersArray} = require('./flyer.fixtures')
-const {makeFlyers} = require('./flyers-store')
 
-describe.only(`FlyersService`, function(){
+
+describe(`FlyersService`, function(){
     
     let db
     const children = makeChildrenArray()
-    const flyers = makeFlyers()
-    /*const flyers = Promise.resolve(makeBuffers()).then(function(values){
-        console.log('in the flyerstest', values)
-        makeFlyersArray(values)
-    })*/
-
-
-
-    //const flyers = makeFlyersArray()
+    const flyers = makeFlyersArray()
     
 
     before(() =>{

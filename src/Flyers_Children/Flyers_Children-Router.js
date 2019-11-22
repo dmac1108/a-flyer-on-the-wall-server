@@ -4,7 +4,7 @@ const path = require('path')
 const Flyers_ChildrenService = require('./Flyers_Children-Service')
 const ChildrenService = require('../Children/Children-Service');
 const FlyersService = require('../Flyers/Flyers-Service')
-const {requireAuth} = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/jwt-auth')
 
 const flyers_childrenRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})

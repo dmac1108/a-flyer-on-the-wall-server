@@ -2,7 +2,7 @@ const xss = require('xss')
 const express = require('express')
 const path = require('path')
 const ChildrenService = require('./Children-Service')
-const {requireAuth} = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/jwt-auth')
 
 const childrenRouter = express.Router()
 const jsonBodyParser = express.json()
@@ -37,7 +37,7 @@ childrenRouter
             })
         }
         newChild.parentid = req.user.userid
-        console.log("post", newChild)
+        
         ChildrenService.insertChild(req.app.get('db'), newChild)
         .then(child =>{
             res.status(201)

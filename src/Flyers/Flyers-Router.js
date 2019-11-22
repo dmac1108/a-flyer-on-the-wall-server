@@ -3,7 +3,7 @@ const express = require('express')
 const path = require('path')
 const FlyersService = require('./Flyers-Service')
 const atob = require('atob')
-const {requireAuth} = require('../middleware/basic-auth')
+const {requireAuth} = require('../middleware/jwt-auth')
 
 const flyersRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})

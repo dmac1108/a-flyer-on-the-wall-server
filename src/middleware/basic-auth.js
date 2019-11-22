@@ -1,4 +1,5 @@
-const atob = require('atob')
+
+const AuthService = require('../auth/auth-service')
 
 function requireAuth(req, res, next){
     const authToken = req.get('Authorization') || ''
@@ -24,11 +25,19 @@ function requireAuth(req, res, next){
     .where({username: tokenUserName})
     .first()
     .then(user =>{
-        if(!user || user.user_password !== tokenPassword){
+        if(!user){
             return res.status(401).json({error: 'Unauthorized request'})
         }
-        req.user = user
-        next()
+
+        return AuthService.comparePasswords(tokenPassword, user.user_password)
+        .then(passwordsMatch =>{
+            if(!passwordsMatch){
+                return res.status(401).json({error: 'Unauthorized request' })
+            }
+            req.user = user
+            next()
+        })
+       
     })
     .catch(next)
 }

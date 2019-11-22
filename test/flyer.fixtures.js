@@ -7,15 +7,15 @@ function makeUsersArray(){
             lastname: 'Smith',
             email: 'jane.smith@test.com',
             username: 'jsmith',
-            user_password: '$2a$12$H/xB3BNGPBemIPx2LJw4HuIEwvV98zsrGGkysyv8tos0k48j2w4L6'
+            user_password: 'apassword'
         },
         {
-        firstname: 'Anita', 
-        lastname: 'Jones',
-        email: 'anita.jones@test.com',
-        username: 'ajones',
-        user_password: '$2a$12$sdtKiihA1lgHrCbIB3hxqul1i4HfBBUZedKjWDMJfD3anJrXPc8RK' 
-        }
+            firstname: 'Anita', 
+            lastname: 'Jones',
+            email: 'anita.jones@test.com',
+            username: 'ajones',
+            user_password: 'apassword' 
+        },
     ]
 }
 
@@ -38,60 +38,71 @@ function makeChildrenArray(){
 }
 
 function makeBuffers(filename){
+    
     const buffer = require('buffer');
     const path = require('path');
     const fs = require('fs');
     
-    let myPromise = new Promise()
-
-  
+    let myPromise = new Promise((resolve, reject)=>{
         fs.readFile(path.join(__dirname,'/assets/',filename),function(error,data){
+            //console.log(path.join(__dirname,'/assets/',filename))
             if(error){
             throw error;
             }else{
             var buf = Buffer.from(data);
             base64 = buf.toJSON('base64');
-            console.log('Base64 of ddr.jpg :' + base64.type);
-            myPromise.resolve(base64);
+            //console.log('Base64 of ddr.jpg :' + base64.type);
+            resolve(base64);
             }
         });
-        
-    
-        //const cornMazeBuffer = encode_base64('Corn-Maze-Flyer.jpg')
-        
-        
-        
-        // const afterSchoolBuffer = Promise.resolve(encode_base64('after-school-flyer.jpg'));
-
-        // const campingBuffer = Promise.resolve(encode_base64('scoutcamping.jpg'));
-        // Promise.all([cornMazeBuffer, afterSchoolBuffer, campingBuffer]).then(function(values){
-        //     console.log(values);
-        // });
-
+    });
         return myPromise
 
 }
 
-
 function makeFlyersArray(values){
     
-    Promise.all([
-        makeBuffers(),
-        makeBuffers(),
-        makeBuffers()
-    ]).then(([cornmaze, camping, aftershool]) =>{
-
-    })
-    const cornMazeBuffer = Promise.makeBuffers(filename)
+    const cornMaze = makeBuffers('Corn-Maze-Flyer.jpg')
+    //console.log(cornMaze)
+    // const buffer = require('buffer');
+    // const path = require('path');
+    // const fs = require('fs');
     
+    // let myPromise = new Promise()
 
+  
+    //     fs.readFile(path.join(__dirname,'/assets/',filename),function(error,data){
+    //         console.log(path.join(__dirname,'/assets/',filename))
+    //         if(error){
+    //         throw error;
+    //         }else{
+    //         var buf = Buffer.from(data);
+    //         base64 = buf.toJSON('base64');
+    //         console.log('Base64 of ddr.jpg :' + base64.type);
+    //         myPromise.resolve(base64);
+    //         }
+    //     });
+
+
+    // Promise.all([
+    //     (resolve),
+    //     makeBuffers(resolve),
+    //     makeBuffers(resolve)
+    // ]).then(([cornmaze, camping, aftershool]) =>{
+    //     console.log(cornmaze)
+    // })
+    //const cornMazeBuffer = Promise.makeBuffers(filename)
+    // const prefix = 'data:image/jpeg;base64,'
+    // const cornmaze = fs.readFile(cornMazeFlyer)
+    // .toString('base64')
+    // console.log(cornmaze)
     return [
         [
             {
                 id: 1,
                 title: "Corn Maze",
                 eventlocation: "Best Corn Maze",
-                flyerimage: cornMazeBuffer,
+                flyerimage: cornMaze,
                 eventstartdate: "10/15/19 15:30",
                 eventenddate: "10/15/19 17:00",
                 actiondate: "10/10/19",
