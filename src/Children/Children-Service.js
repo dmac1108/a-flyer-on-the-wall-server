@@ -2,8 +2,10 @@
 const Knex = require("knex")
 
 const ChildrenService = {
-    getAllChildren (db){
-        return db.select('*').from('children')
+    getAllChildren (db, parentid){
+        return db.select('*')
+        .from('children')
+        .where('parentid', parentid)
     },
     getChildbyId(db, id){
         return db
@@ -11,12 +13,6 @@ const ChildrenService = {
         .from('children')
         .where({id})
         .first()
-    },
-    getAllChildrenByParentId(db, parentid){
-        return db
-        .select('*')
-        .from('children')
-        .where('parentid', parentid)
     },
     insertChild(db, newChild){
         

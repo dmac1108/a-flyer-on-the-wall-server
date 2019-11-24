@@ -4,7 +4,7 @@ const app = require('../src/app')
 const flyerFixtures= require('./flyer.fixtures')
 const bcrypt = require('bcryptjs')
 
-describe.only('Auth Endpoints', function(){
+describe('Auth Endpoints', function(){
     let db
 
     const testUsers = flyerFixtures.makeUsersArray()

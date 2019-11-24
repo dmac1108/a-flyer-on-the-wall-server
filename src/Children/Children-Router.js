@@ -18,7 +18,8 @@ childrenRouter
     .route('/')
     .all(requireAuth)
     .get((req,res, next) => {
-        ChildrenService.getAllChildren(req.app.get('db'))
+        console.log('userid', req.user.userid)
+        ChildrenService.getAllChildren(req.app.get('db'), req.user.userid)
         .then(children =>{
             res.json(children.map(serializeChildren))
         })
@@ -66,21 +67,7 @@ childrenRouter
         .catch(next)
 
     })
-    childrenRouter
-    .route('/parent/:parentid')
-    .all(requireAuth)
-    .get((req, res, next) =>{
-        const parentid = req.params.parentid
-        
-        ChildrenService.getAllChildrenByParentId(req.app.get('db'), parentid)
-        .then(children =>{
-            console.log(children)
-            res.json(children.map(serializeChildren))
-            next()
-        })
-        .catch(next)
-
-    })
+    
 
 
 module.exports = childrenRouter

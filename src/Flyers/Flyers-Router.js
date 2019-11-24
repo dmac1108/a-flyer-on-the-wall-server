@@ -26,7 +26,7 @@ flyersRouter
     .route('/')
     .all(requireAuth)
     .get((req,res, next) => {
-        FlyersService.getAllFlyers(req.app.get('db'))
+        FlyersService.getAllFlyers(req.app.get('db'), req.user.userid)
         .then(flyer =>{
             res.json(flyer.map(serializeFlyers))
         })
@@ -110,19 +110,6 @@ flyersRouter
         })
         .catch(next)
 
-    })
-
-    flyersRouter
-    .route('/user/:userid')
-    .all(requireAuth)
-    .get((req, res, next) =>{
-        const userId = req.params.userid
-        
-        FlyersService.getAllFlyersByUserId(req.app.get('db'), userId)
-        .then((flyers)=>{
-            res.json(flyers.map(serializeFlyers))
-        })
-        .catch(next)
     })
 
 

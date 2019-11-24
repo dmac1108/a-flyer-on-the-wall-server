@@ -23,16 +23,19 @@ function makeUsersArray(){
 function makeChildrenArray(){
     return [
         {
-            id: 1,
+            
             childname: "Dick",
+            parentid: 2,
         },
         {
-            id: 2,
+            
             childname: "Sally",
+            parentid: 1
         },
         {
-            id: 3,
+            
             childname: "Jane",
+            parentid: 1
         },
     ]
 }

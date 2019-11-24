@@ -1,14 +1,10 @@
 const Knex = require("knex")
 
 const FlyersService = {
-    getAllFlyers (db){
-        return db.select('*').from('flyers')
-    },
-    getAllFlyersByUserId(db, userId){
+    getAllFlyers (db, userid){
         return db.select('*')
         .from('flyers')
-        .where('parentuserid', userId)
-
+        .where('parentuserid', userid)
     },
     getFlyerbyId(db, id){
         return db
