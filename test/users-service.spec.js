@@ -2,7 +2,7 @@ const UsersService = require('../src/Users/Users-Service')
 const knex = require('knex')
 const {makeUsersArray} = require('./flyer.fixtures')
 
-describe.only('Users Service', ()=>{
+describe('Users Service', ()=>{
     let db
     const testUsers = makeUsersArray()
     
@@ -57,8 +57,40 @@ describe.only('Users Service', ()=>{
             return UsersService.getUserById(db, 1)
             .then(actual =>{
                 expect(actual.userid).to.eql(1)
+                expect(actual.username).to.eql(testUser.username)
+                expect(actual.password).to.eql(testUser.password)
+                expect(actual.firstname).to.eql(testUser.firstname)
+                expect(actual.lastname).to.eql(testUser.lastname)
+                expect(actual.email).to.eql(testUser.email)
             })
         })
+        it(`GetUserByUsername returns the correct user`, ()=>{
+            const testUser = testUsers[0]
+            return UsersService.getUserByUsername(db, testUser.username)
+            .then(actual =>{
+                expect(actual.userid).to.eql(1)
+                expect(actual.username).to.eql(testUser.username)
+                expect(actual.password).to.eql(testUser.password)
+                expect(actual.firstname).to.eql(testUser.firstname)
+                expect(actual.lastname).to.eql(testUser.lastname)
+                expect(actual.email).to.eql(testUser.email)
+            })
+        })
+        it(`UpdateUserById updates the user and returns the correct fields`, ()=>{
+            const updatedUserFields = {email: 'jsmith@test.com'}
+            const testUser = testUsers[0]
+            return UsersService.updateUser(db, updatedUserFields,1)
+            .then(actual =>{
+                return UsersService.getUserById(db, 1)
+                .then(actual =>{
+                expect(actual.email).to.eql(updatedUserFields.email)
+                expect(actual.username).to.eql(testUser.username)
+                expect(actual.password).to.eql(testUser.password)
+                expect(actual.firstname).to.eql(testUser.firstname)
+                expect(actual.lastname).to.eql(testUser.lastname)
+            })
+        })
+    })
 
 
     })
