@@ -1,14 +1,11 @@
 const FlyersService = require('../src/Flyers/Flyers-Service')
 const knex = require('knex')
-const {makeChildrenArray, makeBuffers, makeFlyersArray} = require('./flyer.fixtures')
+const {makeUsersArray, makeChildrenArray, makeBuffers, makeFlyersArray, encodeImageFiles} = require('./flyer.fixtures')
 
 
-describe(`FlyersService`, function(){
+describe.only(`FlyersService`, function(){
     
     let db
-    const children = makeChildrenArray()
-    const flyers = makeFlyersArray()
-    
 
     before(() =>{
         db = knex({
@@ -17,15 +14,28 @@ describe(`FlyersService`, function(){
         })
     })
 
-    //after(() => db.destroy())
+    const testUsers = makeUsersArray()
+    const children = makeChildrenArray()
+    // const testFlyers = makeFlyersArray()
+    // testFlyers.then((values) => console.log(values))
+    
 
-    //before('clean the table', () => db.raw('TRUNCATE flyers_children, flyers, children RESTART IDENTITY CASCADE'))
+    // after(() => db.destroy())
 
-    //afterEach('clean the table', () => db.raw('TRUNCATE flyers_children, flyers, children RESTART IDENTITY CASCADE'))
+    // before('clean the table', () => db.raw('TRUNCATE flyers, children, users RESTART IDENTITY CASCADE'))
+
+    // afterEach('clean the table', () => db.raw('TRUNCATE flyers, children, users RESTART IDENTITY CASCADE'))
 
     context(`there is no data in the 'flyers' table`, ()=>{
+        beforeEach(()=>{
+            return db
+            .into('users')
+            .insert(testUsers)
+        })
+
         it(`getAllFlyers returns an empty array`, ()=>{
-            return FlyersService.getAllFlyers(db)
+            const parentUserId = 1
+            return FlyersService.getAllFlyers(db, parentUserId)
             .then(actual=>{
                 expect(actual).to.eql([])
             })
@@ -49,23 +59,34 @@ describe(`FlyersService`, function(){
         // })
     })
 
-    context.skip(`there is data in the 'flyers' table`, ()=>{
-        beforeEach(()=>{
-            
-            return db
-            .into('children')
-            .insert(children)
-            .then(()=>{
-                
-                return db
-                .into('flyers')
-                .insert(flyers)
-            })
-        })
-        //afterEach(()=> db.raw('TRUNCATE flyers_children, flyers, children RESTART IDENTITY CASCADE'))
+    context(`there is data in the 'flyers' table`, ()=>{
+        
+        
 
+        // const testPromise = new Promise((resolve, reject)=>{
+        beforeEach(()=>{
+                return db.into('users')
+                .insert(testUsers)
+                .then(()=>{
+                    return db.into('children')
+                    .insert(children)
+                    .then(()=>{
+                        
+                        makeFlyersArray().then((flyers) =>{
+                    
+                        db.into('flyers')
+                        .insert(flyers)
+                    })
+                    .catch((error) => console.error(error))
+                    })
+                    
+                })
+  
+            })
+ 
         it(`getAllFlyers returns all flyers in the 'flyers' table`, ()=>{
-            return FlyersService.getAllFlyers(db)
+            const parentUserId = 1
+            return FlyersService.getAllFlyers(db, parentUserId)
             .then(actual =>{
                 console.log(actual)
             })
@@ -87,14 +108,5 @@ describe(`FlyersService`, function(){
             })
         })
         })
-    })
-
-
-
-
-
-
-
-
-
-
+    // })
+})

@@ -53,7 +53,7 @@ function makeBuffers(filename){
             throw error;
             }else{
             var buf = Buffer.from(data);
-            base64 = buf.toJSON('base64');
+            base64 = buf.toString('base64');
             //console.log('Base64 of ddr.jpg :' + base64.type);
             resolve(base64);
             }
@@ -63,80 +63,71 @@ function makeBuffers(filename){
 
 }
 
-function makeFlyersArray(values){
-    
+function encodeImageFiles(){
     const cornMaze = makeBuffers('Corn-Maze-Flyer.jpg')
-    //console.log(cornMaze)
-    // const buffer = require('buffer');
-    // const path = require('path');
-    // const fs = require('fs');
+    const camping = makeBuffers('scoutcamping.jpg')
+    const afterschool = makeBuffers('after-school-flyer.jpg')
+
+    const encodeImagePromise = Promise.all([cornMaze, camping, afterschool])
+    //.then((values)=>resolve(values))
+     
+    return encodeImagePromise
+}
+
+function makeFlyersArray(){
     
-    // let myPromise = new Promise()
+    let flyersPromise = new Promise((resolve, reject) =>{
+        const imageArray = encodeImageFiles()
+        imageArray.then((values) =>{
+            
+            resolve( [
+                {
+                    
+                    title: "Corn Maze",
+                    eventlocation: "Best Corn Maze",
+                    flyerimage: values[0],
+                    eventstartdate: "10/15/19 15:30",
+                    eventenddate: "10/15/19 17:00",
+                    actiondate: "10/10/19",
+                    flyeraction: "RSVP",
+                    flyercategory: "school",
+                    parentuserid: 1
+                },
+                {
+                    
+                    title: "Field Trip",
+                    eventlocation: "Washington D.C.",
+                    flyerimage: values[2],
+                    eventstartdate: "11/13/19 13:00",
+                    eventenddate: "11/13/19 15:00",
+                    actiondate: "9/5/19",
+                    flyeraction: "Send Permission Slip",
+                    flyercategory: "school",
+                    parentuserid: 1
+                },
+                {
+                    
+                    title: "Camping",
+                    eventlocation: "Camp Lost In the Woods",
+                    flyerimage: values[1],
+                    eventstartdate: "9/3/19 9:30",
+                    eventenddate: "9/4/19 10:30",
+                    actiondate: "8/20/19",
+                    flyeraction: "Pay",
+                    flyercategory: "school",
+                    parentuserid: 2
+                },
+            ])
 
-  
-    //     fs.readFile(path.join(__dirname,'/assets/',filename),function(error,data){
-    //         console.log(path.join(__dirname,'/assets/',filename))
-    //         if(error){
-    //         throw error;
-    //         }else{
-    //         var buf = Buffer.from(data);
-    //         base64 = buf.toJSON('base64');
-    //         console.log('Base64 of ddr.jpg :' + base64.type);
-    //         myPromise.resolve(base64);
-    //         }
-    //     });
 
+        })
 
-    // Promise.all([
-    //     (resolve),
-    //     makeBuffers(resolve),
-    //     makeBuffers(resolve)
-    // ]).then(([cornmaze, camping, aftershool]) =>{
-    //     console.log(cornmaze)
-    // })
-    //const cornMazeBuffer = Promise.makeBuffers(filename)
-    // const prefix = 'data:image/jpeg;base64,'
-    // const cornmaze = fs.readFile(cornMazeFlyer)
-    // .toString('base64')
-    // console.log(cornmaze)
-    return [
-        [
-            {
-                id: 1,
-                title: "Corn Maze",
-                eventlocation: "Best Corn Maze",
-                flyerimage: cornMaze,
-                eventstartdate: "10/15/19 15:30",
-                eventenddate: "10/15/19 17:00",
-                actiondate: "10/10/19",
-                flyeraction: "RSVP",
-                category: "school",
-            },
-            {
-                id: 2,
-                title: "Field Trip",
-                eventlocation: "Washington D.C.",
-                flyerimage: 'z',
-                eventstartdate: "11/13/19 13:00",
-                eventenddate: "11/13/19 15:00",
-                actiondate: "9/5/19",
-                flyeraction: "Send Permission Slip",
-                category: "school",
-            },
-            {
-                id: 3,
-                title: "Camping",
-                eventlocation: "Camp Lost In the Woods",
-                flyerimage: '',
-                eventstartdate: "9/3/19 9:30",
-                eventenddate: "9/4/19 10:30",
-                actiondate: "8/20/19",
-                flyeraction: "Pay",
-                category: "school",
-            },
-        ],
-    ]
+        
+    })
+
+    return flyersPromise
+        
 }
 
 
-module.exports = {makeUsersArray,makeChildrenArray, makeBuffers, makeFlyersArray}
+module.exports = {makeUsersArray,makeChildrenArray, makeBuffers, makeFlyersArray, encodeImageFiles}
