@@ -12,7 +12,6 @@ const serializeUsers = user => ({
     lastname: xss(user.lastname),
     email: xss(user.email),
     username: xss(user.username),
-    user_password: xss(user.user_password),
     
 })
 
@@ -28,22 +27,25 @@ usersRouter
 })
 .post(jsonBodyParser, (req, res, next)=>{
     const {firstname, lastname, email, username, user_password} = req.body
-    //console.log(req.body)
-    const newUser = {firstname, lastname, email, username, user_password}
-
-    for (const [key, value] of Object.entries(newUser))
-        if(value == null){
+    
+    for (const field of ['firstname', 'lastname', 'username', 'user_password', 'email'])
+        if(!req.body[field])
             return res.status(400)
             .json({
                 error: {
-                    message: `Missing the ${key} in the request body`
+                    message: `Missing the ${field} in the request body`
                 }
             })
-        }
+        const passwordError = UsersService.validatePassword(user_password)
+            if(passwordError)
+                return res.status(400).json({
+                    error: passwordError
+                })
+        
     
     UsersService.getUserByUsername(req.app.get('db'), username)
-    .then((user)=>{
-        if(user){
+    .then((hasUserWithUserName)=>{
+        if(hasUserWithUserName){
             return res.status(400)
             .json({
                 error: {
@@ -51,17 +53,31 @@ usersRouter
                 }
             }) 
         }
+
+        return UsersService.hashPassword(user_password)
+        .then(hashedPassword =>{
+            const newUser = {
+                firstname, 
+                lastname, 
+                email, 
+                username, 
+                user_password: hashedPassword
+            }
+        
+        return UsersService.insertNewUser(req.app.get('db'), newUser)
+        .then(user =>{
+            res.status(201)
+            .location(path.posix.join(req.originalUrl, `/${user.userid}`))
+            .json(serializeUsers(user))
+    })
+})
+
     })
     
 
 
 
-    UsersService.insertNewUser(req.app.get('db'), newUser)
-    .then(user =>{
-        res.status(201)
-        .location(path.posix.join(req.originalUrl, `/${user.userid}`))
-        .json(serializeUsers(user))
-    })
+    
     .catch(next)
 })
 
