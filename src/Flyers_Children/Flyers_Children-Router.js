@@ -29,9 +29,11 @@ flyers_childrenRouter
     .catch(next)
 })
 .post(jsonBodyParser, (req, res, next)=>{
-    
-    const {childid, flyerid} = req.body
-    
+    console.log(req.body.length)
+    let newFlyerChildren = []
+    req.body.map((flyerChild) =>{
+    // const {childid, flyerid} = req.body
+    const {childid, flyerid} = flyerChild
     const newFlyer_Child = {childid, flyerid}
     
     for (const [key, value] of Object.keys(newFlyer_Child))
@@ -70,11 +72,14 @@ flyers_childrenRouter
     })
     .catch(next)
 
-    Flyers_ChildrenService.insertFlyers_Children(req.app.get('db'), newFlyer_Child)
+    newFlyerChildren.push(newFlyer_Child)
+})
+
+    Flyers_ChildrenService.insertFlyers_Children(req.app.get('db'), newFlyerChildren)
     .then(newFlyer_Child=>{
         res.status(201)
         .location(path.posix.join(req.originalUrl, `/${newFlyer_Child.id}`))
-        .json(serializeFlyer_Children(newFlyer_Child))
+        .json(newFlyer_Child.map(serializeFlyer_Children))
     })
     .catch(next)
         

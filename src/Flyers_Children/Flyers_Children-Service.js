@@ -21,7 +21,7 @@ const Flyers_ChildrenService = {
         .into('flyers_children')
         .returning('*')
         .then(rows =>{    
-            return rows[0]
+            return rows
         })
     },
     deleteFlyers_ChildrenByFlyerId(db, id){
