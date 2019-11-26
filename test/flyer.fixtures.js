@@ -48,13 +48,13 @@ function makeBuffers(filename){
     
     let myPromise = new Promise((resolve, reject)=>{
         fs.readFile(path.join(__dirname,'/assets/',filename),function(error,data){
-            //console.log(path.join(__dirname,'/assets/',filename))
+            
             if(error){
             throw error;
             }else{
             var buf = Buffer.from(data);
             base64 = buf.toString('base64');
-            //console.log('Base64 of ddr.jpg :' + base64.type);
+            
             resolve(base64);
             }
         });
@@ -129,5 +129,64 @@ function makeFlyersArray(){
         
 }
 
+function makeFlyersNoImagesArray(){
+    
+    return [
+                {
+                    
+                    title: "Corn Maze",
+                    eventlocation: "Best Corn Maze",
+                    flyerimage: '',
+                    eventstartdate: "10/15/19 15:30",
+                    eventenddate: "10/15/19 17:00",
+                    actiondate: "10/10/19",
+                    flyeraction: "RSVP",
+                    flyercategory: "school",
+                    parentuserid: 1
+                },
+                {
+                    
+                    title: "Field Trip",
+                    eventlocation: "Washington D.C.",
+                    flyerimage: '',
+                    eventstartdate: "11/13/19 13:00",
+                    eventenddate: "11/13/19 15:00",
+                    actiondate: "9/5/19",
+                    flyeraction: "Send Permission Slip",
+                    flyercategory: "school",
+                    parentuserid: 1
+                },
+                {
+                    
+                    title: "Camping",
+                    eventlocation: "Camp Lost In the Woods",
+                    flyerimage: '',
+                    eventstartdate: "9/3/19 9:30",
+                    eventenddate: "9/4/19 10:30",
+                    actiondate: "8/20/19",
+                    flyeraction: "Pay",
+                    flyercategory: "school",
+                    parentuserid: 2
+                },
+            ]
+        }
+    
+function makeFlyersChildrenArray(){
+    return [
+        {childid: 1, flyerid: 1},
+        {childid: 2, flyerid: 2},
+        {childid: 2, flyerid: 3}
+    ]
+}
 
-module.exports = {makeUsersArray,makeChildrenArray, makeBuffers, makeFlyersArray, encodeImageFiles}
+function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
+    const token = jwt.sign({ user_id: user.id }, secret, {
+      subject: user.user_name,
+      algorithm: 'HS256',
+    })
+    return `Bearer ${token}`
+  }
+  
+
+
+module.exports = {makeUsersArray,makeChildrenArray, makeFlyersArray, makeFlyersNoImagesArray, makeFlyersChildrenArray, makeAuthHeader}
