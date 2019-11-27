@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const {makeUsersArray, makeChildrenArray, makeFlyersNoImagesArray, makeFlyersArray, makeFlyersChildrenArray} = require('./flyer.fixtures')
+const {makeUsersArray, makeChildrenArray, makeFlyersNoImagesArray, makeFlyersArray, makeFlyersChildrenArray, makeAuthHeader} = require('./flyer.fixtures')
 
 describe('Protected endpoints', function(){
 
@@ -58,11 +58,6 @@ const protectedEndpoints = [
         method: supertest(app).get,
       },
       {
-        name: 'GET /api/flyers_children',
-        path: '/api/flyers_children',
-        method: supertest(app).get,
-      },
-      {
         name: 'GET /api/categories',
         path: '/api/categories',
         method: supertest(app).get,
@@ -98,6 +93,37 @@ const protectedEndpoints = [
         method: supertest(app).patch,
       },
 ]
+
+protectedEndpoints.forEach(endpoint =>{
+    describe(endpoint.name, ()=>{
+        it(`responds 401 'Missing bearer token' when no bearer token`, ()=>{
+            return endpoint.method(endpoint.path)
+            .expect(401, {error: `Missing bearer token`})
+        }
+
+        )
+
+        it(`responds 401 'Unauthorized request' when invalid JWT secret`, ()=>{
+            const validUser = testUsers[0]
+            const invalidSecret = 'bad-secret'
+            return endpoint.method(endpoint.path)
+            .set('Authorization', makeAuthHeader(validUser, invalidSecret))
+            .expect(401, {error: `Unauthorized request`})
+
+        })
+
+        it(`responds 401 'Unauthorized request' when invalid sub in payload`, ()=>{
+            const invalidUser = {username: 'user-not-existy', password: 'wrong'}
+ 
+            return endpoint.method(endpoint.path)
+            .set('Authorization', makeAuthHeader(invalidUser))
+            .expect(401, {error: `Unauthorized request`})
+
+        })
+
+        
+    })
+})
 
 
 })

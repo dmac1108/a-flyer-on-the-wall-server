@@ -2,7 +2,7 @@ const Flyers_ChildrenService = require('../src/Flyers_Children/Flyers_Children-S
 const {makeUsersArray, makeChildrenArray, makeFlyersNoImagesArray, makeFlyersArray, makeFlyersChildrenArray} = require('./flyer.fixtures')
 const knex = require('knex')
 
-describe.only(`Flyers_Children Service object`, function(){
+describe(`Flyers_Children Service object`, function(){
     
     let db
     

@@ -1,8 +1,10 @@
-
+const jwt = require('jsonwebtoken')
+const config = require('../src/config')
 
 function makeUsersArray(){
     return [
         {
+            userid: 1,
             firstname: 'Jane', 
             lastname: 'Smith',
             email: 'jane.smith@test.com',
@@ -10,6 +12,7 @@ function makeUsersArray(){
             user_password: 'apassword'
         },
         {
+            userid: 2,
             firstname: 'Anita', 
             lastname: 'Jones',
             email: 'anita.jones@test.com',
@@ -23,17 +26,17 @@ function makeUsersArray(){
 function makeChildrenArray(){
     return [
         {
-            
+            id: 1,
             childname: "Dick",
             parentid: 2,
         },
         {
-            
+            id: 2,
             childname: "Sally",
             parentid: 1
         },
         {
-            
+            id: 3,
             childname: "Jane",
             parentid: 1
         },
@@ -82,7 +85,7 @@ function makeFlyersArray(){
             
             resolve( [
                 {
-                    
+                    id: 1,
                     title: "Corn Maze",
                     eventlocation: "Best Corn Maze",
                     flyerimage: values[0],
@@ -94,7 +97,7 @@ function makeFlyersArray(){
                     parentuserid: 1
                 },
                 {
-                    
+                    id: 2,
                     title: "Field Trip",
                     eventlocation: "Washington D.C.",
                     flyerimage: values[2],
@@ -106,7 +109,7 @@ function makeFlyersArray(){
                     parentuserid: 1
                 },
                 {
-                    
+                    id: 3,
                     title: "Camping",
                     eventlocation: "Camp Lost In the Woods",
                     flyerimage: values[1],
@@ -133,7 +136,7 @@ function makeFlyersNoImagesArray(){
     
     return [
                 {
-                    
+                    id: 1,
                     title: "Corn Maze",
                     eventlocation: "Best Corn Maze",
                     flyerimage: '',
@@ -145,7 +148,7 @@ function makeFlyersNoImagesArray(){
                     parentuserid: 1
                 },
                 {
-                    
+                    id: 2,
                     title: "Field Trip",
                     eventlocation: "Washington D.C.",
                     flyerimage: '',
@@ -157,7 +160,7 @@ function makeFlyersNoImagesArray(){
                     parentuserid: 1
                 },
                 {
-                    
+                    id: 3,
                     title: "Camping",
                     eventlocation: "Camp Lost In the Woods",
                     flyerimage: '',
@@ -173,15 +176,15 @@ function makeFlyersNoImagesArray(){
     
 function makeFlyersChildrenArray(){
     return [
-        {childid: 1, flyerid: 1},
-        {childid: 2, flyerid: 2},
-        {childid: 2, flyerid: 3}
+        {id: 1, childid: 1, flyerid: 1},
+        {id: 2, childid: 2, flyerid: 2},
+        {id: 3, childid: 2, flyerid: 3}
     ]
 }
 
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
-      subject: user.user_name,
+      subject: user.username,
       algorithm: 'HS256',
     })
     return `Bearer ${token}`
