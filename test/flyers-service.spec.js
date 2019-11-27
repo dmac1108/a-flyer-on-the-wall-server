@@ -1,9 +1,9 @@
 const FlyersService = require('../src/Flyers/Flyers-Service')
-
+const atob = require('atob')
 const knex = require('knex')
 const {makeUsersArray, makeChildrenArray, makeFlyersNoImagesArray, makeFlyersArray} = require('./flyer.fixtures')
 
-describe(`FlyersService`, function(){
+describe.only(`FlyersService`, function(){
     
     let db
 
@@ -45,33 +45,20 @@ describe(`FlyersService`, function(){
             
         })
 
-
-        
-
-        it(`insertFlyer inserts a new flyer and returns it`, ()=>{
+        it(`insertFlyer inserts a new flyer and returns it`, async ()=>{
+            const testFlyers = await makeFlyersArray().then((flyers)=>flyers.filter((flyer)=>flyer.parentuserid === 1))
+            const flyerToInsert = testFlyers[0]
             
-            const flyerPromise = new Promise((resolve, reject)=>{
-                makeFlyersArray()
-                .then((values)=>{
-                    resolve(values)
-                })
-            })
-            
-            
-            const flyerToInsert = flyerPromise[0]
-            console.log(flyerToInsert)
             return FlyersService.insertFlyer(db,flyerToInsert)
             .then(actual =>{
-                console.log(actual)
-                // expect(actual).to.eql({
-                    
-                //     title: flyerToInsert.title,
-                //     eventlocation: flyerToInsert.eventlocation,
-                //     eventstartdate: flyerToInsert.eventstartdate,
-                //     actiondate: flyerToInsert.actiondate,
-                //     flyeraction: flyerToInsert.flyeraction,
-                //     category: flyerToInsert.category,
-                // })
+                expect(actual.title).to.eql(flyerToInsert.title)
+                expect(actual.flyeraction).to.eql(flyerToInsert.flyeraction)
+                expect(actual.actiondate).to.eql(new Date(flyerToInsert.actiondate))
+                expect(actual.eventlocation).to.eql(flyerToInsert.eventlocation)
+                expect(actual.eventstartdate).to.eql(new Date(flyerToInsert.eventstartdate))
+                expect(actual.eventenddate).to.eql(new Date(flyerToInsert.eventenddate))
+                expect(actual.category).to.eql(flyerToInsert.category)
+                expect(atob(actual.flyerimage)).to.eql(flyerToInsert.flyerimage)
             })
         })
     })
@@ -101,9 +88,10 @@ describe(`FlyersService`, function(){
   
         afterEach('clean the table', () => db.raw('TRUNCATE flyers, children, users RESTART IDENTITY CASCADE'))   
  
-        it(`getAllFlyers returns all flyers in the 'flyers' table`, ()=>{
+        it(`getAllFlyers returns all flyers in the 'flyers' table`, async ()=>{
             const parentUserId = 1
-            const expectedFlyersParentId1 = flyersArrayNoImages.filter((flyer)=>flyer.parentid === 1)
+            const expectedFlyersParentId1 = await makeFlyersArray().then((flyers)=>flyers.filter((flyer)=>flyer.parentuserid === parentUserId))
+            
             return FlyersService.getAllFlyers(db, parentUserId)
             .then(actual =>{
                 expect(actual.title).to.eql(expectedFlyersParentId1.title)
@@ -113,23 +101,70 @@ describe(`FlyersService`, function(){
                 expect(actual.eventstartdate).to.eql(expectedFlyersParentId1.eventstartdate)
                 expect(actual.eventenddate).to.eql(expectedFlyersParentId1.eventenddate)
                 expect(actual.category).to.eql(expectedFlyersParentId1.category)
+                expect(actual.flyerimage).to.eql(expectedFlyersParentId1.flyerimage)
                 
             })
         })
 
-        it(`getFlyerbyId returns the flyer`, ()=>{
-            const flyerToRetrieve = flyersArrayNoImages[0]
+        it(`getFlyerbyId returns the flyer`, async ()=>{
+            
+            const parentUserId = 1
+            const flyersArray = await makeFlyersArray().then((flyers)=>flyers.filter((flyer)=>flyer.parentuserid === parentUserId))
+            const flyerToRetrieve = flyersArray[0]
             
             return FlyersService.getFlyerbyId(db,1)
             .then(actual =>{
                 expect(actual.title).to.eql(flyerToRetrieve.title)
                 expect(actual.flyeraction).to.eql(flyerToRetrieve.flyeraction)
-                // expect(actual.actiondate).to.equalDate(flyerToRetrieve.actiondate)
+                expect(actual.actiondate).to.eql(new Date(flyerToRetrieve.actiondate))
                 expect(actual.eventlocation).to.eql(flyerToRetrieve.eventlocation)
-                // expect(actual.eventstartdate).to.eql(flyerToRetrieve.eventstartdate)
-                // expect(actual.eventenddate).to.eql(flyerToRetrieve.eventenddate)
+                expect(actual.eventstartdate).to.eql(new Date(flyerToRetrieve.eventstartdate))
+                expect(actual.eventenddate).to.eql(new Date(flyerToRetrieve.eventenddate))
                 expect(actual.category).to.eql(flyerToRetrieve.category)
+                expect(atob(actual.flyerimage)).to.eql(flyerToRetrieve.flyerimage)
             })
         })
+
+
+        it(`updateFlyer returns the updated flyer`, async ()=>{
+            
+            const parentUserId = 1
+            const flyersArray = await makeFlyersArray().then((flyers)=>flyers.filter((flyer)=>flyer.parentuserid === parentUserId))
+            const flyerToUpdate = flyersArray[0]
+            flyerToUpdate.title = 'Updated Flyer Title'
+            flyerToUpdate.eventlocation = 'New Place New Time'
+            
+            return FlyersService.updateFlyer(db,flyerToUpdate.id, flyerToUpdate)
+            .then(actual =>{
+                console.log(actual.title)
+                console.log(flyerToUpdate.title)
+                expect(actual.title).to.eql(flyerToUpdate.title)
+                expect(actual.flyeraction).to.eql(flyerToUpdate.flyeraction)
+                expect(actual.actiondate).to.eql(new Date(flyerToUpdate.actiondate))
+                expect(actual.eventlocation).to.eql(flyerToUpdate.eventlocation)
+                expect(actual.eventstartdate).to.eql(new Date(flyerToUpdate.eventstartdate))
+                expect(actual.eventenddate).to.eql(new Date(flyerToUpdate.eventenddate))
+                expect(actual.category).to.eql(flyerToUpdate.category)
+                expect(atob(actual.flyerimage)).to.eql(flyerToUpdate.flyerimage)
+            })
+        })
+
+
+
+        it(`deleteFlyerbyId removes the flyer from the database`,  ()=>{
+            
+            // const parentUserId = 1
+            // const flyersArray = await makeFlyersArray().then((flyers)=>flyers.filter((flyer)=>flyer.parentuserid === parentUserId))
+            // const flyerToRetrieve = flyersArray[0]
+            
+            return FlyersService.deleteFlyer(db,1)
+            .then((actual)=>{
+                return FlyersService.getFlyerbyId(db, actual)
+                .then((response)=> {
+                    console.log(response)
+                })
+            })
+        })
+
         })
     })

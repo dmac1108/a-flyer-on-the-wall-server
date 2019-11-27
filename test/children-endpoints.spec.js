@@ -120,7 +120,7 @@ describe(`GET /:id`, function(){
     })
 })
 
-describe.only(`POST /:id`, function(){
+describe(`POST /:id`, function(){
     beforeEach(()=>{
         return db
         .into('users')
