@@ -12,8 +12,10 @@ describe(`Categories Service object`, function(){
         })
     })
 
+    after('disconnect from db', ()=> db.destroy())
+
     context(`Given category type has data`, ()=>{
-            
+
             it(`getAllCategories resolves all categories  from 'category' type`, () =>{
                 return CategoriesService.getAllCategories(db)
                 .then(actual =>{
@@ -21,9 +23,8 @@ describe(`Categories Service object`, function(){
                 })
             })
 
-            
             it(`inserts a new category`, ()=>{
-                const newCategory = 'test'
+                const newCategory = 'test' + new Date()
                 return CategoriesService.insertNewCategory(db,newCategory)
                 .then(actual =>{
                     expect(actual).to.eql(newCategory)

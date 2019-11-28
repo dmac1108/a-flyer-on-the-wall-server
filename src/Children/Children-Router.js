@@ -18,7 +18,7 @@ childrenRouter
     .route('/')
     .all(requireAuth)
     .get((req,res, next) => {
-        console.log('userid', req.user.userid)
+        
         ChildrenService.getAllChildren(req.app.get('db'), req.user.userid)
         .then(children =>{
             res.json(children.map(serializeChildren))

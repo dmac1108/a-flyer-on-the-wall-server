@@ -29,40 +29,32 @@ flyers_childrenRouter
     .catch(next)
 })
 .post(jsonBodyParser, (req, res, next)=>{
-    console.log(req.body.length)
+    
     let newFlyerChildren = []
     req.body.map((flyerChild) =>{
     // const {childid, flyerid} = req.body
     const {childid, flyerid} = flyerChild
     const newFlyer_Child = {childid, flyerid}
     
-    for (const [key, value] of Object.keys(newFlyer_Child))
-        if(value == null){
-            res.status(400)
-            .json({
-                error: {
-                    message: `Missing value for ${key}`
-                }
-            })
-        }
     
     ChildrenService.getChildbyId(req.app.get('db'), childid)
     .then(child =>{
         if(!child){
-            res.status(404)
+            return res.status(404)
             .json({
                 error:{
                     message: 'Child not found'
                 }
             })
         }
+        
     })
     .catch(next)
 
     FlyersService.getFlyerbyId(req.app.get('db'), flyerid)
     .then(flyer =>{
         if(!flyer){
-            res.status(404)
+            return res.status(404)
             .json({
                 error:{
                     message: 'Flyer not found'

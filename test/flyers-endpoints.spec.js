@@ -3,6 +3,9 @@ const app = require('../src/app')
 const {makeFlyersArray, makeChildrenArray, makeAuthHeader, makeUsersArray} = require('./flyer.fixtures')
 const atob = require('atob')
 
+describe(`Flyers Endpoint`, ()=>{
+
+
     let db
     const testUsers = makeUsersArray()
     const testChildren = makeChildrenArray()
@@ -316,4 +319,5 @@ describe(`PATCH /api/flyer/:id`, ()=>{
         
 
     })
+})
 })

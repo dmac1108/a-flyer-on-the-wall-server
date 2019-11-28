@@ -2,7 +2,7 @@ const knex = require('knex')
 const app = require('../src/app')
 const {makeChildrenArray, makeAuthHeader, makeUsersArray} = require('./flyer.fixtures')
 
-
+describe(`Chilrens Endpoints`, ()=>{
 const testUsers = makeUsersArray()
 
 let db
@@ -158,5 +158,7 @@ describe(`POST /:id`, function(){
         .send(newTestChild)
         .expect(400, {error: {message: 'Missing the childname in the request body'}})
     })
+
+})
 
 })
