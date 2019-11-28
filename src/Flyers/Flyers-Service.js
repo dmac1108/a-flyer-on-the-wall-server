@@ -30,6 +30,7 @@ const FlyersService = {
         .where('id', flyerid)
         .update(updatedFlyer)
         
+        
     },
     deleteFlyer(db,flyerid){
         return db('flyers')

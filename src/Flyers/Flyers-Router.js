@@ -106,7 +106,7 @@ flyersRouter
         FlyersService.updateFlyer(req.app.get('db'), req.params.id, fieldsToUpdate)
         .then((result)=>{
             res.status(204).end()
-            .json(serializeFlyers(flyer))
+            
         })
         .catch(next)
 
