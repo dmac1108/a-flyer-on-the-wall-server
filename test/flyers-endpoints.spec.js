@@ -267,7 +267,7 @@ describe('DELETE /api/flyers/:id', ()=>{
 })
 })
 
-describe(`PATCH /api/flyer/:id`, ()=>{
+describe.only(`PATCH /api/flyer/:id`, ()=>{
     beforeEach(()=>{
         return db.into('users')
         .insert(testUsers)
@@ -307,14 +307,15 @@ describe(`PATCH /api/flyer/:id`, ()=>{
         .patch(`/api/flyers/${flyerToUpdate.id}`)
         .set('Authorization', makeAuthHeader({username: testUser.username, password: testUser.user_password}) )
         .send(flyerToUpdate)
-        .then(()=>{
-            return supertest(app)
-            .get(`/api/flyers/${flyerToUpdate.id}`)
-            .set('Authorization', makeAuthHeader({username: testUser.username, password: testUser.user_password}) )
-            .then((response)=>{
-                
-                expect(response.body.title).to.eql(flyerToUpdate.title)
-            })
+        .expect(200)
+        .then((response) =>{
+                    expect(response.body.title).to.eql(flyerToUpdate.title)
+                    expect(response.body.location).to.eql(flyerToUpdate.eventlocation)
+                    expect(new Date(response.body.eventstartdate).toLocaleString()).to.eql(new Date(flyerToUpdate.eventstartdate).toLocaleString())
+                    expect(new Date(response.body.eventenddate).toLocaleString()).to.eql(new Date(flyerToUpdate.eventenddate).toLocaleString())
+                    expect(response.body.action).to.eql(flyerToUpdate.flyeraction)
+                    expect(response.body.category).to.eql(flyerToUpdate.flyercategory)
+                    expect(new Date(response.body.actiondate).toLocaleString()).to.eql(new Date(flyerToUpdate.actiondate).toLocaleString())
         })
         
 
