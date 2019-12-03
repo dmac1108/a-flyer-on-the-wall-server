@@ -40,14 +40,14 @@ flyers_childrenRouter_Flyer
         res.json(res.flyers_child.map(serializeFlyer_Children)):
         res.json(serializeFlyer_Children(res.flyers_child))
 })
-.delete((req,res,next)=>{
-    const flyerid = req.params.flyerid
-    Flyers_ChildrenService.deleteFlyers_ChildrenByFlyerId(req.app.get('db'), flyerid)
-    .then(()=>{
-        res.status(204).end()
-    })
-    .catch(next)
-})
+// .delete((req,res,next)=>{
+//     const flyerid = req.params.flyerid
+//     Flyers_ChildrenService.deleteFlyers_ChildrenByFlyerId(req.app.get('db'), flyerid)
+//     .then(()=>{
+//         res.status(204).end()
+//     })
+//     .catch(next)
+// })
 
 
 
