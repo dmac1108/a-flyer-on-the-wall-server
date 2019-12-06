@@ -5,6 +5,7 @@ const FlyersService = require('./Flyers-Service')
 const atob = require('atob')
 const {requireAuth} = require('../middleware/jwt-auth')
 
+
 const flyersRouter = express.Router()
 const jsonBodyParser = express.json({limit: '50MB'})
 
@@ -37,6 +38,7 @@ flyersRouter
         const newFlyer = {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory}
         const requiredFields = {title, flyerimage, eventstartdate, eventenddate, eventlocation}
         
+
        for (const [key, value] of Object.entries(requiredFields))
         if(value == null){
             return res.status(400)
