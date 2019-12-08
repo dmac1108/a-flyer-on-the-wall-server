@@ -1,23 +1,33 @@
-# Express Boilerplate!
+# A Flyer on the Wall Server
 
-This is a boilerplate project used for starting new projects!
+This contains the REST API for A Flyer on the Wall Client. https://github.com/dmac1108/a-flyer-on-the-wall-client
 
-## Set up
+## Prepare for Testing
 
-Complete the following steps to start a new project (NEW-PROJECT-NAME):
+Create a test database.
 
-1. Clone this repository to your local machine `git clone BOILERPLATE-URL NEW-PROJECTS-NAME`
-2. `cd` into the cloned repository
-3. Make a fresh start of the git history for this project with `rm -rf .git && git init`
-4. Install the node dependencies `npm install`
-5. Move the example Environment file to `.env` that will be ignored by git and read by the express server `mv example.env .env`
-6. Edit the contents of the `package.json` to use NEW-PROJECT-NAME instead of `"name"`: "express-boilerplate",`
+Create a .env file with the following environment variables:
+NODE_ENV=development
+PORT=
+DATABASE_URL=
+TEST_DATABASE_URL=
+CLIENT_ORIGIN=
+JWT_SECRET=
+
+Create the tables in the test database by running the script npm run migrate:test.
+
+
+
 
 ## Scripts
 
 Start the application `npm start`
 
 Start nodemon for the application `npm run dev`
+
+Run migration `npm run migration`
+
+Run migration Test `npm run migration:test`
 
 Run the tests `npm test`
 
