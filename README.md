@@ -16,18 +16,15 @@ JWT_SECRET=
 
 Create the tables in the test database by running the script npm run migrate:test.
 
-
-
-
 ## Scripts
 
 Start the application `npm start`
 
 Start nodemon for the application `npm run dev`
 
-Run migration `npm run migration`
+Run migration `npm run migrate`
 
-Run migration Test `npm run migration:test`
+Run migration Test `npm run migrate:test`
 
 Run the tests `npm test`
 
