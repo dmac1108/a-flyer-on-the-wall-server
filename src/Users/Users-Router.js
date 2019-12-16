@@ -32,9 +32,8 @@ usersRouter
         if(!req.body[field])
             return res.status(400)
             .json({
-                error: {
-                    message: `Missing the ${field} in the request body`
-                }
+                error: `Missing the ${field} in the request body`
+                
             })
         const passwordError = UsersService.validatePassword(user_password)
             if(passwordError)
@@ -48,9 +47,8 @@ usersRouter
         if(hasUserWithUserName){
             return res.status(400)
             .json({
-                error: {
-                    message: `User with username already exists`
-                }
+                error: `User with username already exists`
+                
             }) 
         }
 
@@ -69,14 +67,10 @@ usersRouter
             res.status(201)
             .location(path.posix.join(req.originalUrl, `/${user.userid}`))
             .json(serializeUsers(user))
-    })
-})
+            })
+        })
 
     })
-    
-
-
-
     
     .catch(next)
 })

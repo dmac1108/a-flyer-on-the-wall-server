@@ -267,7 +267,7 @@ describe('DELETE /api/flyers/:id', ()=>{
 })
 })
 
-describe.only(`PATCH /api/flyer/:id`, ()=>{
+describe(`PATCH /api/flyer/:id`, ()=>{
     beforeEach(()=>{
         return db.into('users')
         .insert(testUsers)
