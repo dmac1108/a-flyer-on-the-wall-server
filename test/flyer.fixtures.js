@@ -182,6 +182,14 @@ function makeFlyersChildrenArray(){
     ]
 }
 
+function makeFlyerCategoriesArray(){
+    return [
+        {id: 1, category: 'test1', parentuserid: 1},
+        {id: 2, category: 'test2', parentuserid: 2},
+        {id: 3, category: 'test3', parentuserid: 1}
+    ]
+}
+
 function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
     const token = jwt.sign({ user_id: user.id }, secret, {
       subject: user.username,
@@ -192,4 +200,4 @@ function makeAuthHeader(user, secret = process.env.JWT_SECRET) {
   
 
 
-module.exports = {makeUsersArray,makeChildrenArray, makeFlyersArray, makeFlyersNoImagesArray, makeFlyersChildrenArray, makeAuthHeader}
+module.exports = {makeUsersArray,makeChildrenArray, makeFlyersArray, makeFlyersNoImagesArray, makeFlyersChildrenArray, makeFlyerCategoriesArray, makeAuthHeader}

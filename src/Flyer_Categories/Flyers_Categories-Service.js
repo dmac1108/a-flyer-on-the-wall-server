@@ -6,6 +6,19 @@ const Flyers_CategoriesService = {
         return db.select('*').from('flyer_categories')
         .where('parentuserid', userid)
     },
+    insertFlyer_Category(db, category){
+        
+        return db
+        .insert(category)
+        .into('flyer_categories')
+        .returning('*')
+        .then(rows =>{
+           
+            return rows[0]
+            
+        })
+
+    }
 
 }
 
