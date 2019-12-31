@@ -18,7 +18,7 @@ const serializeFlyers = flyer => ({
     eventenddate: flyer.eventenddate,
     actiondate: flyer.actiondate,
     action: xss(flyer.flyeraction),
-    category: flyer.flyercategory,
+    category: flyer.categoryid,
     
 })
 
@@ -34,8 +34,8 @@ flyersRouter
         .catch(next)
     })
     .post(jsonBodyParser, (req, res, next) => {
-        const {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory} = req.body
-        const newFlyer = {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory}
+        const {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory, categoryid} = req.body
+        const newFlyer = {title, flyerimage, eventstartdate, eventenddate, eventlocation, flyeraction, actiondate, flyercategory, categoryid}
         const requiredFields = {title, flyerimage, eventstartdate, eventenddate, eventlocation}
         
 
@@ -92,9 +92,9 @@ flyersRouter
         .catch(next)
     })
     .patch(jsonBodyParser, (req, res, next)=>{
-        const {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory} = req.body
+        const {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory, categoryid} = req.body
         
-        const fieldsToUpdate = {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory}
+        const fieldsToUpdate = {title, flyerimage, eventstartdate, eventenddate, flyerlocation, flyeraction, actiondate, flyercategory, categoryid}
 
         const numberOfValues = Object.values(fieldsToUpdate).filter(Boolean).length
         
