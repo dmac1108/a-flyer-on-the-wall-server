@@ -39,13 +39,13 @@ flyers_childrenRouter_Child
     res.json(res.flyers_child.map(serializeFlyer_Children)):
     res.json(serializeFlyer_Children(res.flyers_child))
 })
-// .delete((req,res,next)=>{
-//     const childid = req.params.childid
-//     Flyers_ChildrenService.deleteFlyers_ChildrenByChildId(req.app.get('db'), childid)
-//     .then(()=>{
-//         res.status(204).end()
-//     })
-//     .catch(next)
-// })
+.delete((req,res,next)=>{
+    const childid = req.params.childid
+    Flyers_ChildrenService.deleteFlyers_ChildrenByChildId(req.app.get('db'), childid)
+    .then(()=>{
+        res.status(204).end()
+    })
+    .catch(next)
+})
 
 module.exports = flyers_childrenRouter_Child
