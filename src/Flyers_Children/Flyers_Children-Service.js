@@ -4,6 +4,10 @@ const Flyers_ChildrenService = {
     getAllFlyers_Children(db){
         return db.select('*').from('flyers_children')
     },
+    getFlyers_ChildrenById(db, id){
+        return db.select('*').from('flyers_children')
+        .where('id', id)
+    },
     getFlyers_ChildrenByChildId(db, id){
         return db.select('*').from('flyers_children')
         .where('childid', id)
@@ -23,6 +27,11 @@ const Flyers_ChildrenService = {
         .then(rows =>{    
             return rows
         })
+    },
+    deleteFlyers_ChildrenById(db,id){
+        return db('flyers_children')
+        .where('id', id)
+        .del()
     },
     deleteFlyers_ChildrenByFlyerId(db, id){
         return db('flyers_children')
