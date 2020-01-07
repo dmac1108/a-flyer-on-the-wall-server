@@ -97,7 +97,7 @@ describe(`Flyer_Categories Endpoint`, ()=>{
 
         })
 
-        it.only('creates a new category and returns the category object', ()=>{
+        it('creates a new category and returns the category object', ()=>{
             const testUser = testUsers[0]
             const testCategory = testCategories[0]
             

@@ -1,6 +1,6 @@
 const knex = require('knex')
 const app = require('../src/app')
-const {makeFlyersArray, makeChildrenArray, makeAuthHeader, makeUsersArray} = require('./flyer.fixtures')
+const {makeFlyersArray, makeChildrenArray, makeAuthHeader, makeUsersArray, makeFlyerCategoriesArray} = require('./flyer.fixtures')
 const atob = require('atob')
 
 describe(`Flyers Endpoint`, ()=>{
@@ -9,6 +9,7 @@ describe(`Flyers Endpoint`, ()=>{
     let db
     const testUsers = makeUsersArray()
     const testChildren = makeChildrenArray()
+    const testCategories = makeFlyerCategoriesArray()
 
     before('make knex instance', ()=>{
         db = knex({
@@ -51,6 +52,10 @@ describe(`Flyers Endpoint`, ()=>{
                 .then(()=>{
                     return db.into('children')
                     .insert(testChildren)
+                    .then(()=>{
+                        return db.into('flyer_categories')
+                        .insert(testCategories)
+                    })
                     })
                 })
 
@@ -76,7 +81,7 @@ describe(`Flyers Endpoint`, ()=>{
                     expect(new Date(response.body[0].eventstartdate).toLocaleString()).to.eql(new Date(expectedflyers[0].eventstartdate).toLocaleString())
                     expect(new Date(response.body[0].eventenddate).toLocaleString()).to.eql(new Date(expectedflyers[0].eventenddate).toLocaleString())
                     expect(response.body[0].action).to.eql(expectedflyers[0].flyeraction)
-                    expect(response.body[0].category).to.eql(expectedflyers[0].flyercategory)
+                    expect(response.body[0].category).to.eql(expectedflyers[0].categoryid)
                     expect(new Date(response.body[0].actiondate).toLocaleString()).to.eql(new Date(expectedflyers[0].actiondate).toLocaleString())
                 })
 
@@ -94,6 +99,10 @@ describe(`POST /api/flyer`, ()=>{
         .then(()=>{
             return db.into('children')
             .insert(testChildren)
+            .then(()=>{
+                return db.into('flyer_categories')
+                .insert(testCategories)
+            })
             })
         })
     
@@ -126,7 +135,7 @@ describe(`POST /api/flyer`, ()=>{
             expect(new Date(response.body.eventenddate).toLocaleString()).to.eql(new Date(flyerToInsert.eventenddate).toLocaleString())
             expect(response.body.action).to.eql(flyerToInsert.flyeraction)
             expect(new Date(response.body.actiondate).toLocaleString()).to.eql(new Date(flyerToInsert.actiondate).toLocaleString())
-            expect(response.body.category).to.eql(flyerToInsert.flyercategory)
+            expect(response.body.category).to.eql(flyerToInsert.categoryid)
             expect(response.body.image).to.eql(flyerToInsert.flyerimage)
         })
 
@@ -160,6 +169,10 @@ describe('GET /api/flyers/:id', ()=>{
             .then(()=>{
                 return db.into('children')
                 .insert(testChildren)
+                .then(()=>{
+                    return db.into('flyer_categories')
+                    .insert(testCategories)
+                })
                 })
             })
 
@@ -186,7 +199,7 @@ describe('GET /api/flyers/:id', ()=>{
                 expect(new Date(response.body.eventstartdate).toLocaleString()).to.eql(new Date(testFlyer.eventstartdate).toLocaleString())
                 expect(new Date(response.body.eventenddate).toLocaleString()).to.eql(new Date(testFlyer.eventenddate).toLocaleString())
                 expect(response.body.action).to.eql(testFlyer.flyeraction)
-                expect(response.body.category).to.eql(testFlyer.flyercategory)
+                expect(response.body.category).to.eql(testFlyer.categoryid)
                 expect(new Date(response.body.actiondate).toLocaleString()).to.eql(new Date(testFlyer.actiondate).toLocaleString())
             })
 
@@ -224,6 +237,10 @@ describe('DELETE /api/flyers/:id', ()=>{
             .then(()=>{
                 return db.into('children')
                 .insert(testChildren)
+                .then(()=>{
+                    return db.into('flyer_categories')
+                    .insert(testCategories)
+                })
                 })
             })
 
@@ -255,7 +272,7 @@ describe('DELETE /api/flyers/:id', ()=>{
                     expect(new Date(response.body.eventstartdate).toLocaleString()).to.eql(new Date(expectedflyers.eventstartdate).toLocaleString())
                     expect(new Date(response.body.eventenddate).toLocaleString()).to.eql(new Date(expectedflyers.eventenddate).toLocaleString())
                     expect(response.body.action).to.eql(expectedflyers.flyeraction)
-                    expect(response.body.category).to.eql(expectedflyers.flyercategory)
+                    expect(response.body.category).to.eql(expectedflyers.categoryid)
                     expect(new Date(response.body.actiondate).toLocaleString()).to.eql(new Date(expectedflyers.actiondate).toLocaleString())
                 })
                 
@@ -274,6 +291,10 @@ describe(`PATCH /api/flyer/:id`, ()=>{
         .then(()=>{
             return db.into('children')
             .insert(testChildren)
+            .then(()=>{
+                return db.into('flyer_categories')
+                .insert(testCategories)
+            })
             })
         })
 
@@ -314,7 +335,7 @@ describe(`PATCH /api/flyer/:id`, ()=>{
                     expect(new Date(response.body.eventstartdate).toLocaleString()).to.eql(new Date(flyerToUpdate.eventstartdate).toLocaleString())
                     expect(new Date(response.body.eventenddate).toLocaleString()).to.eql(new Date(flyerToUpdate.eventenddate).toLocaleString())
                     expect(response.body.action).to.eql(flyerToUpdate.flyeraction)
-                    expect(response.body.category).to.eql(flyerToUpdate.flyercategory)
+                    expect(response.body.category).to.eql(flyerToUpdate.categoryid)
                     expect(new Date(response.body.actiondate).toLocaleString()).to.eql(new Date(flyerToUpdate.actiondate).toLocaleString())
         })
         

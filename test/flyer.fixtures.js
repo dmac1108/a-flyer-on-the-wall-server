@@ -94,7 +94,8 @@ function makeFlyersArray(){
                     actiondate: "10/10/19",
                     flyeraction: "RSVP",
                     flyercategory: "school",
-                    parentuserid: 1
+                    parentuserid: 1,
+                    categoryid: 1,
                 },
                 {
                     id: 2,
@@ -106,7 +107,8 @@ function makeFlyersArray(){
                     actiondate: "9/5/19",
                     flyeraction: "Send Permission Slip",
                     flyercategory: "school",
-                    parentuserid: 1
+                    parentuserid: 1,
+                    categoryid: 3,
                 },
                 {
                     id: 3,
@@ -118,7 +120,8 @@ function makeFlyersArray(){
                     actiondate: "8/20/19",
                     flyeraction: "Pay",
                     flyercategory: "school",
-                    parentuserid: 2
+                    parentuserid: 2,
+                    categoryid: 2,
                 },
             ])
 

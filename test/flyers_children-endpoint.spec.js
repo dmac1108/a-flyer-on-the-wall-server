@@ -1,12 +1,13 @@
 const knex = require('knex')
 const app = require('../src/app')
-const {makeFlyersChildrenArray, makeFlyersArray, makeChildrenArray, makeAuthHeader, makeUsersArray} = require('./flyer.fixtures')
+const {makeFlyersChildrenArray, makeFlyersArray, makeChildrenArray, makeAuthHeader, makeUsersArray, makeFlyerCategoriesArray} = require('./flyer.fixtures')
 
 describe(`Flyers_Children Enpoint`, ()=>{
 let db
     const testUsers = makeUsersArray()
     const testChildren = makeChildrenArray()
     const testFlyersChildren = makeFlyersChildrenArray()
+    const testCategories = makeFlyerCategoriesArray()
     
 
     before('make knex instance', ()=>{
@@ -49,6 +50,10 @@ describe(`GET /api/flyers_children`, ()=>{
             .then(()=>{
                 return db.into('children')
                 .insert(testChildren)
+                .then(()=>{
+                    return db.into('flyer_categories')
+                    .insert(testCategories)
+                })
                 })
             })
 
@@ -86,6 +91,10 @@ describe(`POST /api/flyers_children`, ()=>{
         .then(()=>{
             return db.into('children')
             .insert(testChildren)
+            .then(()=>{
+                return db.into('flyer_categories')
+                .insert(testCategories)
+            })
             })
         })
 
