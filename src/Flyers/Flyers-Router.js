@@ -7,8 +7,8 @@ const {requireAuth} = require('../middleware/jwt-auth')
 
 
 const flyersRouter = express.Router()
-// const jsonBodyParser = express.json({limit: '150MB'})
-const jsonBodyParser = express.json()
+const jsonBodyParser = express.json({limit: '150MB'})
+//const jsonBodyParser = express.json()
 
 const serializeFlyers = flyer => ({
     id: flyer.id,
